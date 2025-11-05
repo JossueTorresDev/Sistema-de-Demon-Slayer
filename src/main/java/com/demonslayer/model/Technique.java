@@ -26,6 +26,9 @@ public class Technique {
     @Column(name = "difficulty_level")
     private Integer difficultyLevel;
 
+    @Column(name = "deleted")
+    private Boolean deleted = false;
+
     // Constructors
     public Technique() {}
 
@@ -53,4 +56,7 @@ public class Technique {
 
     public Integer getDifficultyLevel() { return difficultyLevel; }
     public void setDifficultyLevel(Integer difficultyLevel) { this.difficultyLevel = difficultyLevel; }
+
+    public Boolean getDeleted() { return deleted; }
+    public void setDeleted(Boolean deleted) { this.deleted = deleted; }
 }

@@ -19,6 +19,9 @@ public class BreathingStyle {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "deleted")
+    private Boolean deleted = false;
+
     @ManyToMany
     @JoinTable(
         name = "character_breathing_styles",
@@ -57,4 +60,7 @@ public class BreathingStyle {
 
     public Set<Technique> getTechniques() { return techniques; }
     public void setTechniques(Set<Technique> techniques) { this.techniques = techniques; }
+
+    public Boolean getDeleted() { return deleted; }
+    public void setDeleted(Boolean deleted) { this.deleted = deleted; }
 }

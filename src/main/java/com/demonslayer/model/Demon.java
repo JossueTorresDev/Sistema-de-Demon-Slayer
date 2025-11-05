@@ -42,6 +42,9 @@ public class Demon {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "deleted")
+    private Boolean deleted = false;
+
     // Constructors
     public Demon() {}
 
@@ -100,4 +103,7 @@ public class Demon {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public Boolean getDeleted() { return deleted; }
+    public void setDeleted(Boolean deleted) { this.deleted = deleted; }
 }

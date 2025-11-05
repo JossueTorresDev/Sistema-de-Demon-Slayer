@@ -22,7 +22,7 @@ public class CharacterService {
     private CharacterRepository characterRepository;
 
     public List<CharacterDto> getAllCharacters() {
-        return characterRepository.findAll().stream()
+        return characterRepository.findAllActive().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -49,26 +49,33 @@ public class CharacterService {
     }
 
     public void deleteCharacter(UUID id) {
-        if (!characterRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Personaje no encontrado con ID: " + id);
-        }
-        characterRepository.deleteById(id);
+        Character character = characterRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Personaje no encontrado con ID: " + id));
+        character.setDeleted(true);
+        characterRepository.save(character);
+    }
+
+    public void restoreCharacter(UUID id) {
+        Character character = characterRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Personaje no encontrado con ID: " + id));
+        character.setDeleted(false);
+        characterRepository.save(character);
     }
 
     public List<CharacterDto> getCharactersByRole(RoleEnum role) {
-        return characterRepository.findByRole(role).stream()
+        return characterRepository.findActiveByRole(role).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     public List<CharacterDto> getCharactersByRank(RankEnum rank) {
-        return characterRepository.findByRank(rank).stream()
+        return characterRepository.findActiveByRank(rank).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     public List<CharacterDto> searchCharactersByName(String name) {
-        return characterRepository.findByNameContainingIgnoreCase(name).stream()
+        return characterRepository.findActiveByNameContainingIgnoreCase(name).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }

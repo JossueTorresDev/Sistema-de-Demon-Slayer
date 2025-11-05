@@ -21,7 +21,7 @@ public class DemonService {
     private DemonRepository demonRepository;
 
     public List<DemonDto> getAllDemons() {
-        return demonRepository.findAll().stream()
+        return demonRepository.findAllActive().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -48,26 +48,33 @@ public class DemonService {
     }
 
     public void deleteDemon(UUID id) {
-        if (!demonRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Demonio no encontrado con ID: " + id);
-        }
-        demonRepository.deleteById(id);
+        Demon demon = demonRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Demonio no encontrado con ID: " + id));
+        demon.setDeleted(true);
+        demonRepository.save(demon);
+    }
+
+    public void restoreDemon(UUID id) {
+        Demon demon = demonRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Demonio no encontrado con ID: " + id));
+        demon.setDeleted(false);
+        demonRepository.save(demon);
     }
 
     public List<DemonDto> getDemonsByRank(DemonRankEnum rank) {
-        return demonRepository.findByDemonRank(rank).stream()
+        return demonRepository.findActiveByDemonRank(rank).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     public List<DemonDto> searchDemonsByName(String name) {
-        return demonRepository.findByNameContainingIgnoreCase(name).stream()
+        return demonRepository.findActiveByNameContainingIgnoreCase(name).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     public List<DemonDto> getMoonDemons() {
-        return demonRepository.findMoonDemons().stream()
+        return demonRepository.findActiveMoonDemons().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }

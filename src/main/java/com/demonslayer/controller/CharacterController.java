@@ -53,6 +53,12 @@ public class CharacterController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/restore")
+    public ResponseEntity<Void> restoreCharacter(@PathVariable UUID id) {
+        characterService.restoreCharacter(id);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/role/{role}")
     public ResponseEntity<List<CharacterDto>> getCharactersByRole(@PathVariable RoleEnum role) {
         List<CharacterDto> characters = characterService.getCharactersByRole(role);

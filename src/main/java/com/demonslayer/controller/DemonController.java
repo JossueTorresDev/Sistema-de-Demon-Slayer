@@ -52,6 +52,12 @@ public class DemonController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/restore")
+    public ResponseEntity<Void> restoreDemon(@PathVariable UUID id) {
+        demonService.restoreDemon(id);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/rank/{rank}")
     public ResponseEntity<List<DemonDto>> getDemonsByRank(@PathVariable DemonRankEnum rank) {
         List<DemonDto> demons = demonService.getDemonsByRank(rank);

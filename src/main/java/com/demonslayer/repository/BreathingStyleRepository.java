@@ -22,4 +22,11 @@ public interface BreathingStyleRepository extends JpaRepository<BreathingStyle, 
     
     @Query("SELECT bs FROM BreathingStyle bs WHERE SIZE(bs.techniques) > :minTechniques")
     List<BreathingStyle> findByTechniqueCountGreaterThan(@Param("minTechniques") int minTechniques);
+    
+    // Métodos que excluyen eliminados lógicamente
+    @Query("SELECT bs FROM BreathingStyle bs WHERE bs.deleted = false")
+    List<BreathingStyle> findAllActive();
+    
+    @Query("SELECT bs FROM BreathingStyle bs WHERE bs.deleted = false AND bs.name LIKE %:name%")
+    List<BreathingStyle> findActiveByNameContainingIgnoreCase(@Param("name") String name);
 }

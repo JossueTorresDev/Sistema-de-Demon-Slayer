@@ -25,4 +25,17 @@ public interface DemonRepository extends JpaRepository<Demon, UUID> {
     
     @Query("SELECT d FROM Demon d WHERE d.demonRank IN ('upper_moon', 'lower_moon')")
     List<Demon> findMoonDemons();
+    
+    // Métodos que excluyen eliminados lógicamente
+    @Query("SELECT d FROM Demon d WHERE d.deleted = false")
+    List<Demon> findAllActive();
+    
+    @Query("SELECT d FROM Demon d WHERE d.deleted = false AND d.demonRank = :rank")
+    List<Demon> findActiveByDemonRank(@Param("rank") DemonRankEnum rank);
+    
+    @Query("SELECT d FROM Demon d WHERE d.deleted = false AND d.name LIKE %:name%")
+    List<Demon> findActiveByNameContainingIgnoreCase(@Param("name") String name);
+    
+    @Query("SELECT d FROM Demon d WHERE d.deleted = false AND d.demonRank IN ('upper_moon', 'lower_moon')")
+    List<Demon> findActiveMoonDemons();
 }

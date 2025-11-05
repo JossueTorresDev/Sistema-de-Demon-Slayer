@@ -49,6 +49,9 @@ public class Character {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "deleted")
+    private Boolean deleted = false;
+
     @ManyToMany(mappedBy = "characters")
     private Set<BreathingStyle> breathingStyles;
 
@@ -119,4 +122,7 @@ public class Character {
 
     public Set<BreathingStyle> getBreathingStyles() { return breathingStyles; }
     public void setBreathingStyles(Set<BreathingStyle> breathingStyles) { this.breathingStyles = breathingStyles; }
+
+    public Boolean getDeleted() { return deleted; }
+    public void setDeleted(Boolean deleted) { this.deleted = deleted; }
 }

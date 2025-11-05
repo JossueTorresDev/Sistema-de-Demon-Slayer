@@ -28,4 +28,17 @@ public interface CharacterRepository extends JpaRepository<Character, UUID> {
     
     @Query("SELECT c FROM Character c JOIN c.breathingStyles bs WHERE bs.name = :styleName")
     List<Character> findByBreathingStyleName(@Param("styleName") String styleName);
+    
+    // Métodos que excluyen eliminados lógicamente
+    @Query("SELECT c FROM Character c WHERE c.deleted = false")
+    List<Character> findAllActive();
+    
+    @Query("SELECT c FROM Character c WHERE c.deleted = false AND c.role = :role")
+    List<Character> findActiveByRole(@Param("role") RoleEnum role);
+    
+    @Query("SELECT c FROM Character c WHERE c.deleted = false AND c.rank = :rank")
+    List<Character> findActiveByRank(@Param("rank") RankEnum rank);
+    
+    @Query("SELECT c FROM Character c WHERE c.deleted = false AND c.name LIKE %:name%")
+    List<Character> findActiveByNameContainingIgnoreCase(@Param("name") String name);
 }
